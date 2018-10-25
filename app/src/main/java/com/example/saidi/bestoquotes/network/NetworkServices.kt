@@ -1,12 +1,11 @@
 package com.example.saidi.bestoquotes.network
 
-import android.telecom.Call
-import com.example.saidi.bestoquotes.model.BaseResponse
-import com.example.saidi.bestoquotes.model.Quote
+import com.example.saidi.bestoquotes.model.Competitions
+import retrofit2.Call
 import retrofit2.http.GET
 
 interface NetworkServices {
 
-    @GET("/qod.json")
-    fun getQuoteOfDay(): retrofit2.Call<BaseResponse<List<Quote>>>?
+    @GET("competitions")
+    fun getCompetitions(): Call<Competitions>?
 }

@@ -3,8 +3,7 @@ package com.example.saidi.bestoquotes.network
 import android.os.Handler
 import android.os.Looper
 import com.example.saidi.bestoquotes.BuildConfig
-import com.example.saidi.bestoquotes.model.BaseResponse
-import com.example.saidi.bestoquotes.model.Quote
+import com.example.saidi.bestoquotes.model.Competitions
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -25,7 +24,7 @@ object NetworkManager {
             it.proceed(request)
         }
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://quotes.rest")
+            .baseUrl("https://api.football-data.org/v2/")
             .addConverterFactory(
                 GsonConverterFactory.create(
                     GsonBuilder()
@@ -38,21 +37,15 @@ object NetworkManager {
         networkService = retrofit.create(NetworkServices::class.java)
     }
 
-    fun getQuoteOfDay(callback: NetworkCallback<Quote>) {
-        var contents: Quote? = null
-        networkService.getQuoteOfDay()?.enqueue(object : Callback<BaseResponse<List<Quote>>> {
-            override fun onFailure(call: Call<BaseResponse<List<Quote>>>, t: Throwable) {
+    fun getCompetitions(callback: NetworkCallback<Competitions>) {
+        networkService.getCompetitions()?.enqueue(object : Callback<Competitions> {
+            override fun onFailure(call: Call<Competitions>, t: Throwable) {
                 throw t
             }
 
-            override fun onResponse(
-                call: Call<BaseResponse<List<Quote>>>,
-                response: Response<BaseResponse<List<Quote>>>
-            ) {
-                contents = response.body()?.contents?.get(0)
-                notify(callback, contents)
+            override fun onResponse(call: Call<Competitions>, response: Response<Competitions>) {
+                notify(callback, response.body())
             }
-
         })
     }
 
