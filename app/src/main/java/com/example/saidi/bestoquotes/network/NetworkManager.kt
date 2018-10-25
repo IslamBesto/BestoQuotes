@@ -2,10 +2,12 @@ package com.example.saidi.bestoquotes.network
 
 import android.os.Handler
 import android.os.Looper
+import com.example.saidi.bestoquotes.BuildConfig
 import com.example.saidi.bestoquotes.model.BaseResponse
 import com.example.saidi.bestoquotes.model.Quote
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,6 +19,11 @@ object NetworkManager {
     private val networkService: NetworkServices
 
     init {
+        val httpClient = OkHttpClient.Builder().addInterceptor {
+            val request =
+                it.request().newBuilder().addHeader(BuildConfig.API_NAME, BuildConfig.API_KEY).build()
+            it.proceed(request)
+        }
         val retrofit = Retrofit.Builder()
             .baseUrl("http://quotes.rest")
             .addConverterFactory(
@@ -26,6 +33,7 @@ object NetworkManager {
                         .create()
                 )
             )
+            .client(httpClient.build())
             .build()
         networkService = retrofit.create(NetworkServices::class.java)
     }

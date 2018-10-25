@@ -6,13 +6,25 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
+
+    Properties keyProperties = new Properties()
+    def keyPropertiesFile = file('key.properties')
+    if (!keyPropertiesFile.exists()) {
+        throw new GradleException("Could not read key.properties")
+    }
+    keyProperties.load(new FileInputStream(keyPropertiesFile))
+    def apiName = keyProperties['API_KEY_NAME']
+    def apiKey = keyProperties['API_KEY_VALUE']
+
     defaultConfig {
-        applicationId "com.example.saidi.bestoquotes"
+        applicationId "com.example.saidi.bestoscore"
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_NAME", apiName)
+        buildConfigField("String", "API_KEY", apiKey)
     }
     buildTypes {
         release {
@@ -21,6 +33,7 @@ android {
         }
     }
 }
+
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.0.0'
