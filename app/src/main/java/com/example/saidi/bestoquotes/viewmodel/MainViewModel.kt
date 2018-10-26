@@ -4,17 +4,23 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.saidi.bestoquotes.model.Competition
-import com.example.saidi.bestoquotes.model.Competitions
 import com.example.saidi.bestoquotes.network.NetworkManager
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    var competitions: MutableLiveData<List<Competition>> = MutableLiveData()
+    var competitionsLiveData: MutableLiveData<List<Competition>> = MutableLiveData()
+    var competitions = ArrayList<Competition>()
 
     init {
-        NetworkManager.getCompetitions(object : NetworkManager.NetworkCallback<Competitions> {
-            override fun networkCallback(data: Competitions?) {
-                competitions.postValue(data?.compititonList)
+        NetworkManager.getCompetitions(object : NetworkManager.NetworkCallback<Competition> {
+            override fun networkCallback(data: Competition?) {
+                data?.let { it ->
+                    competitions.add(it)
+                    val sortedDompetitions = competitions.sortedWith(compareBy { it.id })
+                    competitionsLiveData.postValue(sortedDompetitions.distinct())
+                }
+
             }
         })
+
     }
 }
