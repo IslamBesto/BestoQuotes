@@ -2,7 +2,7 @@ package com.example.saidi.bestoquotes.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Compition(
+data class Competition(
     @SerializedName("id")
     val id: Int,
     @SerializedName("area")

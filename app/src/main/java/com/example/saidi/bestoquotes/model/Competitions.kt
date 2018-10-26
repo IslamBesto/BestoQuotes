@@ -6,5 +6,5 @@ data class Competitions(
     @SerializedName("count")
     val count: Int,
     @SerializedName("competitions")
-    val compititonList: List<Compition>
+    val compititonList: List<Competition>
 )
