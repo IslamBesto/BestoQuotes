@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.saidi.bestoquotes.model.Competition
 import com.example.saidi.bestoquotes.network.NetworkManager
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class CompetitionsViewModel(application: Application) : AndroidViewModel(application) {
     var competitionsLiveData: MutableLiveData<List<Competition>> = MutableLiveData()
     var competitions = ArrayList<Competition>()
 
